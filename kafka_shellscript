@@ -1,0 +1,24 @@
+#!/bin/bash
+echo "Updating System"
+sleep 1
+yum update -y
+echo "Instaliing JDk and wget"
+sleep 1
+yum install java-11-openjdk wget -y
+echo "Downloading KAFKA"
+sleep 1
+wget https://downloads.apache.org/kafka/3.4.1/kafka_2.13-3.4.1.tgz
+echo "Extracting Kafka file"
+sleep 1
+tar -xzf kafka_2.13-3.4.1.tgz
+sudo mv kafka_2.13-3.4.1 /root/kafka
+cd kafka
+sleep 2
+cat <<EOF | sudo tee /etc/systemd/system/zookeeper.service
+[Unit]
+Description=Apache Zookeeper server
+Documentation=http://zookeeper.apache.org
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+[Service]
+
